@@ -27,15 +27,12 @@ import Tags from "@/components/Money/Tags.vue";
 const { recordListModel } = require("@/models/recordListModel.ts");
 const { tagListModel } = require("@/models/tagListModel.ts");
 const recordList = recordListModel.fetch();
-const tagList = tagListModel.fetch();
-
-console.log("===tagList==", tagList);
 
 @Component({
   components: { NumberPad, Types, Tags, FormItem },
 })
 export default class Money extends Vue {
-  tags = tagList;
+  tags = window.tagList;
   recordList: RecordItem[] = recordList;
   record: RecordItem = {
     tags: [],
