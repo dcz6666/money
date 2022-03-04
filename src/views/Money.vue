@@ -25,7 +25,6 @@ import FormItem from "@/components/Money/FormItem.vue";
 import Tags from "@/components/Money/Tags.vue";
 
 const { recordListModel } = require("@/models/recordListModel.ts");
-const { tagListModel } = require("@/models/tagListModel.ts");
 const recordList = recordListModel.fetch();
 
 @Component({

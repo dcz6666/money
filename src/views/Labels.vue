@@ -21,7 +21,6 @@
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
 import  Button from '@/components/Button.vue'
-const { tagListModel } = require("@/models/tagListModel.ts");
 
 @Component({
   components:{Button}
