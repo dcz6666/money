@@ -10,8 +10,7 @@
           @update:value="onUpdateNots"
         />
       </div>
-      <Tags :data-source.sync="tags" @update:value="onUpdateTags" />
-      <!-- {{record}} -->
+      <Tags/>
     </layout>
   </div>
 </template>
@@ -21,27 +20,31 @@ import Vue from "vue";
 import { Component, Watch } from "vue-property-decorator";
 import NumberPad from "@/components/Money/NumberPad.vue";
 import Types from "@/components/Money/Types.vue";
-// import FormItem from "@/components/Money/FormItem.vue";
 import FormItem from "@/components/Money/FormItem.vue";
 import Tags from "@/components/Money/Tags.vue";
 
-import store from '@/store/index2'
-
 @Component({
   components: { NumberPad, Types, Tags, FormItem },
+  computed:{
+    recordList(){
+      return this.$store.state.recordList;
+    }
+  }
 })
+
 export default class Money extends Vue {
-  tags = store.tagList;
-  recordList: RecordItem[] | undefined = store.recordList;
+  // recordList: RecordItem[] | undefined = oldStore.recordList;
   record: RecordItem = {
     tags: [],
     notes: "",
     type: "-",
     amount: 0,
   };
-  onUpdateTags(value: string[]) {
-    this.record.tags = value;
+
+  created(){
+    this.$store.commit('fetchRecords')
   }
+  
   onUpdateNots(value: string) {
     this.record.notes = value;
   }
@@ -49,7 +52,7 @@ export default class Money extends Vue {
     this.record.amount = parseFloat(value);
   }
   saveRecode() {
-    store.createRecord(this.record)
+    this.$store.commit('createRecord',this.record);
   }
 }
 </script>
