@@ -104,13 +104,11 @@ export default class Statistics extends Vue {
     return tags.length === 0 ? "无" : tags.map(t=>t.name) .join(",");
   }
   get recordList() {
-    return this.$store.state.recordList;
+    return (this.$store.state as RootState).recordList;
   }
   get groupList() {
     let { recordList } = this;
-    
     // type HashTableValue = { title: string; items: RecordItem[] };
-
     const newList = clone(recordList)
       .filter(r=> r.type === this.type)
       .sort((a, b) => dayjs(b.createdAt).valueOf() - dayjs(a.createdAt).valueOf());
