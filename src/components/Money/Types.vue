@@ -1,8 +1,10 @@
 <template>
   <div>
     <ul class="types">
-      <li :class="value==='-' && 'selected'" @click="selectType('-')" >支出</li>
-      <li :class="value==='+' && 'selected'" @click="selectType('+')">收入</li>
+      <li
+        :class="{[classPrefix+'-item']:classPrefix, selected:value==='-'}"
+       @click="selectType('-')" >支出</li>
+      <li :class="{[classPrefix+'-item']:classPrefix, selected:value==='+'}" @click="selectType('+')">收入</li>
     </ul>
   </div>
 </template>
@@ -12,48 +14,16 @@
   @Component
   export default class Types extends Vue {
     //  type='-'//'-' 表示支出 ‘+’表示收入
-     @Prop() readonly value!:string;
-     // Prop 告诉Vue xxx不是data 是prop
-     // number 告诉Vue xxx是个Number
+     @Prop(String) readonly value!:string;
+     @Prop(String) classPrefix?:string
+
      selectType(type:string){
       if(type!=='-' && type!=='+'){
         throw new Error('type is unkonwn')
       }
       this.$emit('update:value', type);
     }
-    // @Watch('type')
-    // onTypeChanged(value:string){
-    //    this.$emit('update:value', value);
-    // }
-    // mounted(){
-    //   if(this.xxx===undefined ){
-    //     console.log("没有XXX")
-    //   }else{
-    //     console.log("this.xxx",this.xxx.toString());
-    //   }
-    // }
   }
-
-// export default {
-//   name: "Types",
-//   props:['xxx'],
-//   data(){
-//     return{
-//       type:'-' //'-' 表示支出 ‘+’表示收入
-//     }
-//   },
-//   mounted(){
-//     console.log(this.xxx)
-//   },
-//   methods:{
-//     selectType(type){
-//       if(type!=='-' && type!=='+'){
-//         throw new Error('type is unkonw')
-//       }
-//       this.type=type
-//     }
-//   }
-// };
 </script>
 <style lang="scss" scoped>
 .types {

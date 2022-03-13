@@ -1,6 +1,6 @@
 <template>
   <div class="numberPad">
-    <div class="output">{{output}}</div>
+    <div class="output">{{ output }}</div>
     <div class="buttons">
       <button @click="inputContent">1</button>
       <button @click="inputContent">2</button>
@@ -14,51 +14,56 @@
       <button @click="inputContent">8</button>
       <button @click="inputContent">9</button>
       <button @click="OK" class="ok">ok</button>
-      <button @click="inputContent" class="zero" >0</button>
+      <button @click="inputContent" class="zero">0</button>
       <button @click="inputContent">.</button>
     </div>
   </div>
 </template>
 <script lang="ts">
-  import Vue from 'vue' 
-  import { Component,Prop } from 'vue-property-decorator';
-  @Component
-  export default class NumberPad extends Vue {
-    output: string='0';
-    inputContent(event:MouseEvent){
-      const button=(event.target as HTMLButtonElement);
-        const input = button.textContent!;
-        console.log("input",input);
-        if(input.length===16){return};
-        if(this.output==='0'){
-            if(input==='0'){return;}
-            if('123456789'.indexOf(input)>=0){
-              this.output=input
-            }else{
-              this.output+=input
-            }
-            return;
-        }
-        if(this.output.indexOf('.')>=0 && input==='.'){ return }
-        this.output+=input  
+import Vue from "vue";
+import { Component, Prop } from "vue-property-decorator";
+@Component
+export default class NumberPad extends Vue {
+  @Prop(Number) readonly value!: number;
+  // output = this.value.toString();
+   output:string='0';
+  inputContent(event: MouseEvent) {
+    const button = event.target as HTMLButtonElement;
+    const input = button.textContent!;
+    console.log("input", input);
+    if (this.output.length === 16) {
+      return;
     }
-    remove(){
-      if(this.output.length===1){
-        this.output='0'
-      }else{
-        this.output=this.output.slice(0,-1);
+    if (this.output === "0") {
+      if ("123456789".indexOf(input) >= 0) {
+        this.output = input;
+      } else {
+        this.output += input;
       }
+      return;
     }
-    clear(){
-      this.output='0'
+    if (this.output.indexOf(".") >= 0 && input === ".") {
+      return;
     }
-    OK(){
-      this.$emit('update:value',this.output)
-      this.$emit('submit',this.output)
-      this.output='0'
-    }
-
+    this.output += input;
   }
+  remove() {
+    if (this.output.length === 1) {
+      this.output = "0";
+    } else {
+      this.output = this.output.slice(0, -1);
+    }
+  }
+  clear() {
+    this.output = "0";
+  }
+  OK() {
+    const number = parseFloat(this.output);
+    this.$emit("update:value", number);
+    this.$emit("submit", number);
+    this.output = "0";
+  }
+}
 // export default {
 //   name: "NumberPad",
 
